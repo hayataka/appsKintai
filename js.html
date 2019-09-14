@@ -1,0 +1,29 @@
+
+<script>
+/**サーバーサイドのgasを呼び出し、callBack関数で受け取り **/
+google.script.run.withSuccessHandler(callback1).helloServer("test1");
+ 
+function callback1(ret){
+  console.log(ret);
+}
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello GAS!'
+  },
+  methods: {
+    changeMessage: function() {
+      this.message = 'Hello JavaScript!';
+    }
+  }
+});
+
+
+$('#date_sample').datepicker({
+  format: 'yyyy/mm/dd'
+  , language:'ja'
+});
+$('#date_sample').datepicker('update', new Date());
+</script>
+

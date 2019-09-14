@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<!-- 
+編集したあとは、保存して、スクリプトエディタのメニューから「公開」→「ウェブアプリケーションとして公開」をクリック。
+続いて、以下「ウェブアプリケーションとして導入」ダイアログで「最新のコード」をクリックします。
+-->
+  <head>
+    <!-- includeに近いイメージで考えておく-->
+    <base target="_top">
+    <!-- GASの機能で強制出力スクリプトレットタグ
+    　　　getContentで文字列として出力させている
+       　GASのHTMLファイルには、GASのスクリプトを埋め込むことができる
+        （css.htmlの内容をエスケープせずに出力したいので 強制出力）
+    -->
+    <?!= HtmlService.createHtmlOutputFromFile('css').getContent(); ?>
+</head>
+  <body>
+  <!-- google drive上の画像は、 ファイルをまず全体公開（共有、リンクを知っている人は誰でも）にし、
+  ファイルIDをプレビュー、新しいタブ（ウィンドウ）で表示して確認する-->
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="https://lausol.com">
+    <img src="https://drive.google.com/uc?id=1yynTGi4sU_RP4_TG9Y3n1Wq6DQ8KlmC7" width="78px" height="32px" alt="ラウレアソリューション" />
+     本気で楽しみ 自分らしく働く
+  </a>
+</nav>
+  <div class="jumbotron">
+    <h1 class="test1">勤怠入力</h1>    
+  </div>
+<!--href属性などの属性のデータバインディングをするv-bindディレクティブ -->
+<div class="container">
+
+    <div id="app">
+      <p>{{ message }}</p>
+      <button @click="changeMessage">テキスト変更！</button>
+
+       <form>
+
+         <div class="row">
+           <label class="col-sm-4">日付</label>
+           <input type="text" class="form-control col-sm-4" id="date_sample"> 
+         </div>        
+         <div class="row">
+           <label class="col-sm-4">出勤</label>
+           <input type="text" class="form-control col-sm-4" id="attend"> 
+         </div>        
+
+       </form>
+
+
+    </div>
+
+
+  </div>
+      <?!= HtmlService.createHtmlOutputFromFile('lib_js').getContent(); ?>
+      <?!= HtmlService.createHtmlOutputFromFile('js').getContent(); ?>
+  </body>
+</html>
+
+
