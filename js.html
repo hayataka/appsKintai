@@ -19,11 +19,16 @@ var app = new Vue({
   }
 });
 
-
-$('#date_sample').datepicker({
-  format: 'yyyy/mm/dd'
-  , language:'ja'
-});
-$('#date_sample').datepicker('update', new Date());
+            $(function () {
+                $('#datetimepicker1').datetimepicker({
+                  locale:'ja'
+                });
+            });
+            
+            $(function () {
+                $('#datetimepicker3').datetimepicker({
+                });
+            });            
+            
 </script>
 

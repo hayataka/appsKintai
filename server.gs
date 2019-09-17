@@ -35,9 +35,22 @@ function helloServer(val){
   Logger.log("usr:%s", usr);
   var email = usr.getEmail();
   
-  var st2 = SpreadsheetApp.openById("171Izfj5TBVs9wxwQfYtOQWK3vpUT_P__jSVCAuwDPXs");
-  Logger.log("test2:%s", st2.getName());
-  Logger.log("test3:%s", st2);
+  // リソース-ライブラリ-MAoZrMsylZMiNUMljU4QtRHEMpGMKinCk  で、
+  // https://qiita.com/roana0229/items/fea931fcabc57f193620 をインストールしています
+  
+  var id = "171Izfj5TBVs9wxwQfYtOQWK3vpUT_P__jSVCAuwDPXs";  
+  var name = 'inputSheet';
+  var db = SpreadSheetsSQL.open(id, name);
+  db.insertRows([
+    {user: email, date: '2019/09/18', start: '08:00', end: '17:00', worktime : '8.0', bikou: val}
+    //jsonの配列として複数insertできる
+  ]);
+  
+//  var st2 = SpreadsheetApp.openById(id);
+//  Logger.log("test2:%s", st2.getName());
+//  Logger.log("test3:%s", st2);
+
+
   
   return data;
 }
