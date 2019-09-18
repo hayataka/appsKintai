@@ -44,13 +44,35 @@ function todaymmddYYYY(){
                 ,    format: 'LT'
                 });
 
-
+                function onSuccessGet(ret){
+                    alert(ret);
+                    console.log(ret);
+                }
+                function onFailureGet(ret){
+                    alert("失敗扱い, " + ret);
+                }
                 function onSuccess(ret){
                     alert("成功扱い");
                 }
                 function onFailure(ret){
                     alert("失敗扱い");
                 }
+                $('#get').on('click', function() {
+                    var date   = $('#datetimepicker1 input').val();
+                    if (date) {
+                      var data = { date : date };
+                      /**サーバーサイドのgasを呼び出し、callBack関数で受け取り **/
+                      google.script.run
+                        .withSuccessHandler(onSuccessGet)
+                        .withFailureHandler(onFailureGet)
+                        .getTargetBook();
+                        //.getData(data);
+                    } else {
+                      alert("日付を設定してから呼び出して");
+                      return;
+                    }
+                    
+                });
 
 
                 $('#update').on('click', function() {

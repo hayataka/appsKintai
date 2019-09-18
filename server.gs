@@ -20,16 +20,41 @@ function doGet() {
   return htmlOutput;
 }
 
+/** emailアドレスをキーとして、作業対象のspreadSheetを決定する
+**  emailアドレスはログインしているgoogleアカウント情報から取得する
+**
+** 引数なし
+** @return spreadSheetのキーとなる値　（spreadsheet内に管理している）
+** 対象データがない場合はnull
+**
+**/
+function getTargetBook() {
+  var email = common_getUserEmail();
+  
+  // mailToBook スプレッドシートのURL内のキー  
+  var id = '1LxsjwkjrtNGVpfnN7wQdzLI2KPup2XtXccI3sssE25I';
+  var sheetName = 'address';
+  var db = SpreadSheetsSQL.open(id, sheetName);
+  // memo: where句に記載する列名は、select句に記載する必要ありだった
+  var result = db.select(['email','bookKey']).filter('email = hayakawa@lausol.com').result();
+  if (result.length == 0) {
+    return null;
+  } else {
+    var key = result[0].bookKey;
+    return key;
+  }
+}
+
+
+function getData(inData) {
+  var email = common_getUserEmail();
+  
+}
 
 function helloServer(inData){
   Logger.log("clientからのサーバ呼び出し、引数%s", inData)
 
-  /**スクリプト作成者本人、スクリプトエディタから実行、Gsuiteユーザが開発したスクリプト、かつ、同ドメインのユーザがスクリプト実行
-  webアプリケーションとして実行中に「次のユーザとしてアプリケーションを実行」を「アプリにアクセスしているユーザ」に設定している
-  のどれかの条件の時**/  
-  var usr = Session.getActiveUser();
-  Logger.log("usr:%s", usr);
-  var email = usr.getEmail();
+  var email = common_getUserEmail();
   inData.user = email; //追加
 
   // リソース-ライブラリ-MAoZrMsylZMiNUMljU4QtRHEMpGMKinCk  で、
@@ -42,9 +67,9 @@ function helloServer(inData){
   
   db.insertRows([
      inData
-    //jsonの配列として複数insertできる
+    //jsonの配列として複数insertできる excelの１行目列の値をプロパティ名とするobject
   ]);
-  
+
 //  var st2 = SpreadsheetApp.openById(id);
 //  Logger.log("test2:%s", st2.getName());
 //  Logger.log("test3:%s", st2);
