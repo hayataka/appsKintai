@@ -25,8 +25,8 @@ function doGet() {
 **
 ** 引数なし
 ** @return spreadSheetのキーとなる値　（spreadsheet内に管理している）
-** 対象データがない場合はnull
-**
+** 対象データがない場合は{status:'fail', message:'mailToBookスプレッドシートに' + email + 'のレコードがありません'};
+** 対象データがある場合は{status:'success', bookKey:bookKey};
 **/
 function getTargetBook() {
   var email = common_getUserEmail();
@@ -36,18 +36,32 @@ function getTargetBook() {
   var sheetName = 'address';
   var db = SpreadSheetsSQL.open(id, sheetName);
   // memo: where句に記載する列名は、select句に記載する必要ありだった
-  var result = db.select(['email','bookKey']).filter('email = hayakawa@lausol.com').result();
-  if (result.length == 0) {
-    return null;
+  var sqlResult = db.select(['email','bookKey']).filter('email = hayakawa@lausol.com').result();
+  if (sqlResult.length == 0) {
+    return {status:'fail', message:'mailToBookスプレッドシートに' + email + 'のレコードがありません'};
   } else {
-    var key = result[0].bookKey;
-    return key;
+    var bookKey = sqlResult[0].bookKey;
+    return {status:'success', bookKey:bookKey};
   }
 }
 
 
+/**
+** inData.date 画面で入力した日付箇所
+**
+**
+**
+**/
 function getData(inData) {
+  var book = getTargetBook();
+  if (book.status == 'fail') {
+    return book;
+  }
+  // 個々人ごとの、スプレッドシートから対象日付のレコードを取得する
+  var bookKey = book.bookKey;
   var email = common_getUserEmail();
+  var record = getTargetRecord(email, bookKey);
+  //FIXME 次はここから
   
 }
 
