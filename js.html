@@ -1,34 +1,82 @@
 
 <script>
-/**サーバーサイドのgasを呼び出し、callBack関数で受け取り **/
-google.script.run.withSuccessHandler(callback1).helloServer("test1");
- 
-function callback1(ret){
-  console.log(ret);
-}
 
 var app = new Vue({
-  el: '#app',
-  data: {
-    message: 'Hello GAS!'
-  },
-  methods: {
-    changeMessage: function() {
-      this.message = 'Hello JavaScript!';
-    }
-  }
+  el: '#app'
+//  ,data: {
+//    message: 'Hello GAS!'
+//  },
+//  methods: {
+//    changeMessage: function() {
+//      this.message = 'Hello JavaScript!';
+//    }
+//  }
 });
 
+function todaymmddYYYY(){
+  var dt = new Date();
+  var y = dt.getFullYear();
+  var m = ("00" + (dt.getMonth()+1)).slice(-2);
+  var d = ("00" + dt.getDate()).slice(-2);
+  var result = m + "/" + d + "/" + y;
+  return result;
+}
+
+
             $(function () {
+                // mm/dd/yyyy形式です
+                var today = todaymmddYYYY();
+
                 $('#datetimepicker1').datetimepicker({
                   locale:'ja'
+                  // 今日
+                  ,defaultDate: moment()
+                  // 日付 フォーマット
+                  ,format: 'L'
+                 });
+                $('#datetimepicker2').datetimepicker({
+                      locale:'ja'
+                      // 時刻 HH:MMフォーマット
+                ,    format: 'LT'
                 });
-            });
-            
-            $(function () {
                 $('#datetimepicker3').datetimepicker({
+                      locale:'ja'
+                ,    format: 'LT'
                 });
-            });            
-            
+
+
+                function onSuccess(ret){
+                    alert("成功扱い");
+                }
+                function onFailure(ret){
+                    alert("失敗扱い");
+                }
+
+
+                $('#update').on('click', function() {
+                    var date   = $('#datetimepicker1 input').val();
+                    var start = $('#datetimepicker2 input').val();
+                    var end   = $('#datetimepicker3 input').val();
+                    var data = {
+                        date : date
+                        ,start: start
+                        ,end : end
+                        ,worktime: 'あとで'
+                        ,bikou:'あとで'
+                    };
+                    /**サーバーサイドのgasを呼び出し、callBack関数で受け取り **/
+                    google.script.run
+                      .withSuccessHandler(onSuccess)
+                      .withFailureHandler(onFailure)
+                      .helloServer(data);
+ 
+                
+                    //console.log(day);
+                    //console.log(start);
+                    //console.log(end);
+                });
+                
+            });
+
 </script>
 

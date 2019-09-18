@@ -21,12 +21,8 @@ function doGet() {
 }
 
 
-function helloServer(val){
-  Logger.log("clientからのサーバ呼び出し、引数%s", val)
-  var data = {
-    id : 10
-    ,name :"太郎"
-  };
+function helloServer(inData){
+  Logger.log("clientからのサーバ呼び出し、引数%s", inData)
 
   /**スクリプト作成者本人、スクリプトエディタから実行、Gsuiteユーザが開発したスクリプト、かつ、同ドメインのユーザがスクリプト実行
   webアプリケーションとして実行中に「次のユーザとしてアプリケーションを実行」を「アプリにアクセスしているユーザ」に設定している
@@ -34,15 +30,18 @@ function helloServer(val){
   var usr = Session.getActiveUser();
   Logger.log("usr:%s", usr);
   var email = usr.getEmail();
-  
+  inData.user = email; //追加
+
   // リソース-ライブラリ-MAoZrMsylZMiNUMljU4QtRHEMpGMKinCk  で、
   // https://qiita.com/roana0229/items/fea931fcabc57f193620 をインストールしています
   
   var id = "171Izfj5TBVs9wxwQfYtOQWK3vpUT_P__jSVCAuwDPXs";  
   var name = 'inputSheet';
   var db = SpreadSheetsSQL.open(id, name);
+  
+  
   db.insertRows([
-    {user: email, date: '2019/09/18', start: '08:00', end: '17:00', worktime : '8.0', bikou: val}
+     inData
     //jsonの配列として複数insertできる
   ]);
   
@@ -52,7 +51,7 @@ function helloServer(val){
 
 
   
-  return data;
+  return inData;
 }
 
 
